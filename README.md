@@ -4,6 +4,8 @@ Code accompanying the FLOORA paper: a DSL tokenizer, dataset loader, and inferen
 
 - Dataset: [ADSKAILab/floora_dataset](https://huggingface.co/datasets/ADSKAILab/floora_dataset)
 - Models: [ADSKAILab/floora-0.6b](https://huggingface.co/ADSKAILab/floora-0.6b), [ADSKAILab/floora-1.7b](https://huggingface.co/ADSKAILab/floora-1.7b)
+- Model card: [MODEL_CARD.md](MODEL_CARD.md)
+- Data card: [DATA_CARD.md](DATA_CARD.md)
 
 ## Setup
 
