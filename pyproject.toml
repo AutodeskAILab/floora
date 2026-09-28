@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=77", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "floora"
+version = "0.1.0"
+description = "FLOORA"
+requires-python = ">=3.12,<3.14"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+
+dependencies = [
+    "pytest",
+    "datasets>=5.0.1",
+    "tokenizers>=0.22.2",
+    "torch==2.8.0",
+    "transformers>=4.55.0,<5.0.0",
+    "matplotlib>=3.7",
+    "Pillow>=10.0",
+    "tqdm",
+]
+
+[project.optional-dependencies]
+vllm = [
+    "vllm==0.10.2",
+]
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["floora*"]
+
+[tool.setuptools.package-data]
+"floora.tokenizer" = ["tokenizer_files/*"]
+
+[tool.uv.extra-build-dependencies]
+default = ["setuptools", "wheel"]
