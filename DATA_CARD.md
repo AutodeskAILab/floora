@@ -91,6 +91,8 @@ license: odbl
 
 Dataset used to train and evaluate **FLOORA**, a domain-specific language model for multifamily residential floor-plan generation.
 
+Paper: [arXiv:2609.36064](https://arxiv.org/abs/2609.36064)
+
 ## Dataset Contents
 
 The dataset provides three configurations.
@@ -104,3 +106,14 @@ The DSL represents building metadata, structural information, massing geometry, 
 ## License
 
 Open Data Commons Open Database License (ODbL) v1.0.
+
+## Citation
+
+```bibtex
+@article{rezaei2026floora,
+  title={FLOORA: A Human-Aligned Domain-Specific Language Model for Architectural Design},
+  author={Rezaei-Shoshtari, Sahand and Wozniczka, Patryk and Ishida, Shu and Streuber, Gregg and Javadi, Farnoosh and Landes, Jeffrey and Ju, Angela and Azam, Muhammad and Lim, Bryan and Luttun, Johan and others},
+  journal={arXiv preprint arXiv:2609.36064},
+  year={2026}
+}
+```

@@ -10,172 +10,89 @@ base_model:
 
 # FLOORA
 
-FLOORA, short for Floor Layout Optimization with RL Alignment, is a compact domain-specific language model for architectural floor-plan generation.
+FLOORA, short for Floor Layout Optimization with RL Alignment, is a compact domain-specific language model for architectural floor-plan generation. It generates structured multifamily residential layouts from building metadata, structural information, and massing geometry, producing a compact architectural DSL that can be deterministically parsed, validated, normalized, rendered, and converted back into geometry.
 
-The model generates structured multifamily residential floor layouts conditioned on building metadata, structural information, and building massing geometry. Rather than generating images or unrestricted natural language, FLOORA produces a compact architectural domain-specific language that can be deterministically parsed, validated, normalized, rendered, and converted back into geometry.
-
-FLOORA is released in two sizes, [ADSKAILab/floora-0.6b](https://huggingface.co/ADSKAILab/floora-0.6b) (based on Qwen3-0.6B) and [ADSKAILab/floora-1.7b](https://huggingface.co/ADSKAILab/floora-1.7b) (based on Qwen3-1.7B), both trained using domain-specific pretraining, architect-edited supervised fine-tuning, and reinforcement learning with a combination of learned architect preferences and automatically verifiable geometric and functional rewards.
+FLOORA is released in two sizes, [ADSKAILab/floora-0.6b](https://huggingface.co/ADSKAILab/floora-0.6b) based on Qwen3-0.6B and [ADSKAILab/floora-1.7b](https://huggingface.co/ADSKAILab/floora-1.7b) based on Qwen3-1.7B. Both use domain-specific pretraining, architect-edited supervised fine-tuning, and reinforcement learning with learned architect preferences and automatically verifiable geometric and functional rewards.
 
 ## Model Details
 
-### Model Description
+FLOORA takes structured architectural prompts containing building metadata, structural material, polygonal massing, and optionally partial space layouts. It autoregressively generates labeled floor-plan polygons for living units, corridors, and vertical circulation cores.
 
-FLOORA is a family of domain-specific language models developed for structured architectural layout generation. This model card describes the Qwen3-based FLOORA-0.6B and FLOORA-1.7B models.
+Its custom architectural DSL is compact, token-efficient, human-readable, and deterministically parseable. An equivalent example requires 642 DSL characters versus more than 10,000 characters in IFC.
 
-The model takes a structured architectural prompt containing information such as building metadata, structural material, and a polygonal building massing, and autoregressively generates labeled floor-plan polygons representing living units, corridors, and vertical circulation cores.
+The training pipeline includes architectural DSL construction and canonicalization, large-scale synthetic data generation, domain-specific pretraining, architect feedback collection, supervised fine-tuning on architect-edited layouts, reward-model training on pairwise architect preferences, and GRPO reinforcement learning with learned and verifiable rewards.
 
-A custom architectural DSL is used rather than conventional BIM formats such as IFC. The representation is designed to be compact, token-efficient, human-readable, and deterministically parseable. In the example reported in the paper, the DSL representation requires 642 characters compared with more than 10,000 characters for an equivalent IFC representation.
-
-The complete training pipeline consists of
-
-1. Architectural DSL construction and canonicalization
-2. Large-scale synthetic data generation
-3. Domain-specific pretraining
-4. Architect feedback collection
-5. Supervised fine-tuning on architect-edited layouts
-6. Reward-model training on pairwise architect preferences
-7. GRPO reinforcement learning with learned and verifiable rewards
-
-The nominal Qwen3-0.6B and Qwen3-1.7B backbones contain approximately 0.6B and 1.7B parameters respectively. After replacing the original vocabulary with the smaller FLOORA DSL vocabulary and resizing the embedding layers, the effective parameter count reported in the paper for the 0.6B variant is approximately 440M parameters; the 1.7B variant is reduced by a similar proportion.
+The Qwen3-0.6B and Qwen3-1.7B backbones contain approximately 0.6B and 1.7B parameters. Replacing the original vocabulary with the smaller FLOORA DSL vocabulary reduces the 0.6B variant to approximately 440M effective parameters, with the 1.7B variant reduced by a similar proportion.
 
 - **Developed by:** Autodesk Research
-- **Funded by:** Not specified in the paper
 - **Shared by:** Autodesk Research
-- **Model type:** Autoregressive causal language model specialized for structured architectural DSL generation
-- **Language(s) (NLP):** Architectural domain-specific language. The model is not intended as a general natural-language model.
+- **Model type:** Autoregressive causal language model for structured architectural DSL generation
+- **Language:** Architectural domain-specific language, not general natural language
 - **License:** Apache-2.0
-- **Finetuned from model:** Qwen/Qwen3-0.6B, Qwen/Qwen3-1.7B
-- **Nominal model size:** 0.6B or 1.7B parameters, depending on variant
-- **Effective parameter count after vocabulary resizing:** approximately 440M parameters for the 0.6B variant
-- **Primary domain:** Architecture, Engineering, and Construction
+- **Finetuned from:** Qwen/Qwen3-0.6B, Qwen/Qwen3-1.7B
+- **Nominal size:** 0.6B or 1.7B parameters
+- **Effective size after vocabulary resizing:** approximately 440M parameters for the 0.6B variant
+- **Domain:** Architecture, Engineering, and Construction
 - **Primary task:** Massing-conditioned multifamily residential floor-plan generation
 
 ### Model Sources
 
 - **Repository:** https://github.com/AutodeskAILab/floora
 - **Dataset:** https://huggingface.co/datasets/ADSKAILab/floora_dataset
-- **Paper:** FLOORA: A Human-Aligned Domain-Specific Language Model for Architectural Design
-- **Demo:** Not specified in the paper
+- **Paper:** [FLOORA: A Human-Aligned Domain-Specific Language Model for Architectural Design](https://arxiv.org/abs/2609.36064)
 
 ## Uses
 
 ### Direct Use
 
-FLOORA is intended for generating conceptual multifamily residential floor layouts from structured building descriptions.
-
-Typical inputs contain
-
-- Building metadata
-- Structural material
-- Building massing geometry
-- Optionally, partial space layouts
-
-The model generates a `spaces` DSL block containing polygons labeled as
-
-- `core`
-- `corridor`
-- `living_unit`
-
-The generated DSL can subsequently be parsed and converted into geometric floor-plan representations using the FLOORA parser and inference utilities.
-
-The primary intended use is rapid conceptual architectural layout generation and design exploration rather than final building documentation.
+FLOORA is intended for rapid conceptual multifamily residential layout generation and design exploration. Inputs can include building metadata, structural material, building massing geometry, and partial space layouts. Outputs are `spaces` DSL blocks with polygons labeled `core`, `corridor`, and `living_unit`, which can be parsed and converted into geometric floor plans with the FLOORA utilities.
 
 ### Downstream Use
 
-FLOORA may be integrated into architectural design and generative-design systems that require structured, geometrically interpretable outputs.
-
-Potential downstream applications include
-
-- Conceptual multifamily floor-plan generation
-- Automated layout exploration
-- Generation of candidate layouts for architect review
-- Geometry-aware design optimization workflows
-- Architectural design research
-- Structured generation experiments in Architecture, Engineering, and Construction
-- Research into domain-specific language models for engineering applications
-
-The DSL and parser allow downstream systems to validate, normalize, render, and convert model outputs into geometric representations.
+FLOORA can support conceptual floor-plan generation, automated layout exploration, architect review workflows, geometry-aware design optimization, architectural design research, structured AEC generation experiments, and research on domain-specific language models for engineering. The DSL and parser support validation, normalization, rendering, and conversion to geometry.
 
 ### Out-of-Scope Use
 
-FLOORA is not intended to be used as
+FLOORA is not intended as a general-purpose language model or architectural assistant, a replacement for licensed architectural or engineering judgment, a construction-document or building-code compliance system, a structural, mechanical, electrical, fire-safety, or life-safety engineering system, an unrestricted natural-language model, or an agentic architectural design system. Use outside the demonstrated multifamily residential scope requires additional evaluation.
 
-- A general-purpose language model
-- A general-purpose architectural assistant
-- A replacement for licensed architectural or engineering judgment
-- A system for producing construction-ready documents
-- A building-code compliance system
-- A structural, mechanical, electrical, fire-safety, or life-safety engineering system
-- A generator for building types outside the model's demonstrated multifamily residential scope without additional evaluation
-- A model for unrestricted natural-language generation
-- An agentic architectural design system
-
-The training and evaluation data are specifically scoped to multifamily residential floor-plan generation conditioned on building massings.
-
-Performance may degrade for highly irregular building footprints or geometries that are poorly represented in the training and post-training distributions.
+Training and evaluation are scoped to multifamily residential floor-plan generation conditioned on building massings. Performance may degrade on highly irregular or underrepresented geometries.
 
 ## Bias, Risks, and Limitations
 
-FLOORA has several important limitations.
+**Domain scope.** FLOORA is specialized for conceptual multifamily residential floor-plan generation and should not be treated as a general architectural design model.
 
-**Domain scope**
+**Geographic and architectural conventions.** Real-world evaluation uses multifamily building footprints from more than 50 major North American cities. Human feedback follows architectural conventions commonly observed in North America, so learned preferences may reflect those conventions.
 
-The model is specialized for conceptual multifamily residential floor-plan generation. Results should not be interpreted as demonstrating general architectural design capability.
+**Synthetic-data dependence.** Most domain pretraining data are procedurally generated, with approximately 4.1 million samples before rotation augmentation and approximately 82 million after augmentation. Architect feedback improves real-world generalization, but procedural biases may remain.
 
-**Geographic and architectural conventions**
+**Distribution shift.** OpenStreetMap footprints differ substantially from the synthetic training distribution. Highly irregular or uncommon massings may be harder, especially when underrepresented during training and post-training. Evaluation on real-world OpenStreetMap massings provides the more informative out-of-distribution measurement.
 
-The real-world evaluation dataset contains multifamily building footprints collected from more than 50 major North American cities. The architects providing human feedback were instructed to evaluate layouts according to architectural conventions commonly observed in North America. The learned design preferences may therefore reflect North American multifamily design conventions.
+**Verifier-defined metrics.** Similar geometric and functional specifications are used for synthetic-data filtering and verifiable evaluation rewards, so synthetic verifier performance is not fully independent evidence of architectural quality.
 
-**Synthetic-data dependence**
+**Human preference data.** Ten practicing architects participated in feedback collection. Architectural quality is subjective, and preferences may differ across practitioners, regions, building programs, and design standards.
 
-Most domain pretraining data are procedurally generated. The synthetic corpus contains approximately 4.1 million samples before rotation augmentation and approximately 82 million samples after augmentation. Although post-training with architect feedback substantially improves real-world generalization, the model may retain biases introduced by the procedural generation system.
+**VLM-based evaluation.** Some evaluations use Gemini 3.5 Flash as a pairwise vision-language-model judge. It agrees with architect-implied preferences on 77.5% of approximately 10,000 validation pairs, indicating substantial but imperfect agreement with professional judgment.
 
-**Distribution shift**
-
-OpenStreetMap building footprints differ substantially from the synthetic training distribution. Highly irregular or uncommon massings may remain difficult, particularly when their geometry is underrepresented in pretraining and post-training data.
-
-**Verifier-defined metrics**
-
-The same broad geometric and functional specification is used both when filtering portions of the synthetic training data and when constructing verifiable evaluation rewards. Synthetic verifier performance should therefore not be interpreted as fully independent evidence of architectural quality.
-
-The paper identifies evaluation on real-world OpenStreetMap massings as the more informative out-of-distribution measurement.
-
-**Human preference data**
-
-Architect feedback reflects the judgments of a finite group of professional practitioners. Ten practicing architects participated in the feedback collection process.
-
-Architectural quality can be subjective, and alternative practitioners, regions, building programs, or design standards may prefer different layouts.
-
-**VLM-based evaluation**
-
-Some evaluations use Gemini 3.5 Flash as a pairwise vision-language-model judge. The judge agrees with architect-implied preferences on 77.5% of approximately 10,000 validation pairs, indicating substantial but imperfect agreement with professional human judgment.
-
-**No guarantee of validity**
-
-Although reinforcement learning substantially improves geometric and functional correctness, generated layouts are not guaranteed to satisfy every architectural, regulatory, structural, accessibility, safety, or constructability requirement.
+**Validity.** Reinforcement learning improves geometric and functional correctness, but outputs are not guaranteed to satisfy every architectural, regulatory, structural, accessibility, safety, or constructability requirement.
 
 ### Recommendations
 
-Generated layouts should be treated as conceptual design proposals rather than finished architectural solutions.
+Treat generated layouts as conceptual proposals rather than finished architectural solutions. Parse and validate the DSL, apply the provided geometric and functional verifiers, visually inspect outputs, use qualified architectural professionals for real-world decisions, evaluate before applying the model to new building typologies, regions, or design standards, and do not treat verifier success as equivalent to full architectural correctness or code compliance.
 
-Users should
+## Citation
 
-- Parse and validate generated DSL before downstream use
-- Apply the provided geometric and functional verifiers
-- Visually inspect generated layouts
-- Use qualified architectural professionals for real-world design decisions
-- Perform additional evaluation before applying the model to other building typologies, regions, or design standards
-- Avoid treating verifier success as equivalent to full architectural correctness or code compliance
+```bibtex
+@article{rezaei2026floora,
+  title={FLOORA: A Human-Aligned Domain-Specific Language Model for Architectural Design},
+  author={Rezaei-Shoshtari, Sahand and Wozniczka, Patryk and Ishida, Shu and Streuber, Gregg and Javadi, Farnoosh and Landes, Jeffrey and Ju, Angela and Azam, Muhammad and Lim, Bryan and Luttun, Johan and others},
+  journal={arXiv preprint arXiv:2609.36064},
+  year={2026}
+}
+```
 
 ## How to Get Started with the Model
 
-The FLOORA repository provides the inference utilities, DSL parser, validation tools, and geometry-processing code required for the complete generation workflow.
-
-Repository
-
-https://github.com/AutodeskAILab/floora
-
-A minimal Transformers loading pattern is shown below. Swap the model identifier for `ADSKAILab/floora-1.7b` to use the larger variant.
+The [FLOORA repository](https://github.com/AutodeskAILab/floora) provides inference utilities, the DSL parser, validation tools, and geometry-processing code for the generation workflow. Swap the model identifier for `ADSKAILab/floora-1.7b` to use the larger variant.
 
 ```python
 import torch
