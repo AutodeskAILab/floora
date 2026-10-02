@@ -1,11 +1,12 @@
-# FLOORA: Floor Layout Optimization with RL Alignment
+# FLOORA: A Human-Aligned Domain-Specific Language Model for Architectural Design
 
-Code accompanying the FLOORA paper: a DSL tokenizer, dataset loader, and inference pipeline for generating architectural floor plans with a FLOORA language model.
+Code accompanying the [FLOORA paper](https://arxiv.org/abs/2609.36064): a DSL tokenizer, dataset loader, and inference pipeline for generating architectural floor plans with a FLOORA language model.
 
+- Paper: [arXiv:2609.36064](https://arxiv.org/abs/2609.36064)
 - Dataset: [ADSKAILab/floora_dataset](https://huggingface.co/datasets/ADSKAILab/floora_dataset)
 - Models: [ADSKAILab/floora-0.6b](https://huggingface.co/ADSKAILab/floora-0.6b), [ADSKAILab/floora-1.7b](https://huggingface.co/ADSKAILab/floora-1.7b)
-- Model card: [MODEL_CARD.md](MODEL_CARD.md)
 - Data card: [DATA_CARD.md](DATA_CARD.md)
+- Model card: [MODEL_CARD.md](MODEL_CARD.md)
 
 ## Setup
 
@@ -101,3 +102,14 @@ floora/
 ## License
 
 Licensed under the Apache License, Version 2.0. See [LICENSE](LICENSE) for the full text.
+
+## Citation
+
+```bibtex
+@article{rezaei2026floora,
+  title={FLOORA: A Human-Aligned Domain-Specific Language Model for Architectural Design},
+  author={Rezaei-Shoshtari, Sahand and Wozniczka, Patryk and Ishida, Shu and Streuber, Gregg and Javadi, Farnoosh and Landes, Jeffrey and Ju, Angela and Azam, Muhammad and Lim, Bryan and Luttun, Johan and others},
+  journal={arXiv preprint arXiv:2609.36064},
+  year={2026}
+}
+```
